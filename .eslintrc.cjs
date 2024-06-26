@@ -1,3 +1,5 @@
+const { rules } = require("eslint-config-prettier");
+
 /* eslint-env node */
 module.exports = {
   extends: [
@@ -8,4 +10,7 @@ module.exports = {
   parser: "@typescript-eslint/parser",
   plugins: ["@typescript-eslint"],
   root: true,
+  rules: {
+    "no-explicit-any": false,
+  },
 };
