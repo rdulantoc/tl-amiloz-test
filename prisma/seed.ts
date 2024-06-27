@@ -2,7 +2,7 @@
 // https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding#seeding-your-database-with-typescript-or-javascript
 
 import { PrismaClient } from "@prisma/client";
-import { UserRoles } from "../src/types/roles";
+import { UserRoles } from "../src/types/enums";
 const prisma = new PrismaClient();
 
 async function main() {
