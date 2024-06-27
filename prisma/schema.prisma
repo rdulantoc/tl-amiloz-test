@@ -99,6 +99,7 @@ model Payment {
   installment   Installment @relation(fields: [installmentId], references: [id])
   installmentId String
   amount        Float
+  isReverted    Boolean     @default(false)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 }

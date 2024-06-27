@@ -54,7 +54,7 @@ export class InstallmentsModel {
   }
 
   static async registerPayment(
-    installment: Partial<Installment>,
+    installment: Installment,
     newPaidAmount: number
   ) {
     const nextStatus =
@@ -70,6 +70,21 @@ export class InstallmentsModel {
           connect: {
             status: nextStatus,
           },
+        },
+      },
+    });
+  }
+
+  static async revertPayment(installment: Installment, revertedAmount: number) {
+    const newPaidAmount = installment.paidAmount - revertedAmount;
+    const nextStatus = newPaidAmount === 0 ? "Pending" : "Partial";
+
+    return prisma.installment.update({
+      where: { id: installment.id },
+      data: {
+        paidAmount: newPaidAmount,
+        status: {
+          connect: { status: nextStatus },
         },
       },
     });

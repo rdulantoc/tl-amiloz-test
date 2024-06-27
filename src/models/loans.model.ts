@@ -53,4 +53,36 @@ export class LoansModel {
 
     return { ...createdLoan, installments: createdInstallments };
   }
+
+  static async updateStatus(loanId: string) {
+    const loan = await prisma.loan.findUnique({
+      where: { id: loanId },
+      select: {
+        installment: {
+          select: {
+            status: true,
+          },
+        },
+      },
+    });
+
+    const isPaid = loan?.installment.every(
+      (item) => item.status.status === "Completed"
+    );
+
+    const status = isPaid ? "Paid" : "Active";
+
+    return prisma.loan.update({
+      where: {
+        id: loanId,
+      },
+      data: {
+        status: {
+          connect: {
+            status,
+          },
+        },
+      },
+    });
+  }
 }
