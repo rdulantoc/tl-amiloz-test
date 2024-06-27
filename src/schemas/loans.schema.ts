@@ -1,10 +1,10 @@
 import { z } from "zod";
 
-export const loanSchema = z.object({
+export const createLoanSchema = z.object({
   body: z.object({
-    offerId: z.string().uuid(),
+    offerId: z.string().uuid("Invalid offer Id"),
   }),
   params: z.object({
-    userId: z.string().uuid(),
+    userId: z.string().uuid("Invalid user Id"),
   }),
 });

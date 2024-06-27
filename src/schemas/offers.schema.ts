@@ -1,8 +1,14 @@
 import { z } from "zod";
 const offerSchema = z.object({
-  amount: z.number().positive(),
-  term: z.number().positive().int(),
-  interestRate: z.number().positive().max(1),
+  amount: z.number().positive("Amount should be greater than 0"),
+  term: z
+    .number()
+    .positive("Term should be greater than 0")
+    .int("Term should be an integer"),
+  interestRate: z
+    .number()
+    .positive("Interest rate should be greater than 0")
+    .max(1, "Interest rate should be lesser than 1"),
   offerStatusId: z.number().int(),
   startDate: z.coerce.date(),
 });
@@ -14,6 +20,6 @@ export const createOfferSchema = z.object({
       .min(2, "Minimum 2 offers are required"),
   }),
   params: z.object({
-    userId: z.string().uuid(),
+    userId: z.string().uuid("Invalid user Id"),
   }),
 });

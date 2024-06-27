@@ -2,7 +2,7 @@ import { Router } from "express";
 import { LoansController } from "../controllers/loans.controller";
 import { UsersController } from "../controllers/users.controller";
 import { validateSchema } from "../middleware/validationMiddleware";
-import { loanSchema } from "../schemas/loans.schema";
+import { createLoanSchema } from "../schemas/loans.schema";
 import { createUserSchema, loginUserSchema } from "../schemas/users.schema";
 import { offersRouter } from "./offers";
 
@@ -23,6 +23,6 @@ usersRouter.post(
 usersRouter.use("/", offersRouter);
 usersRouter.post(
   "/:userId/prestamos",
-  validateSchema(loanSchema),
+  validateSchema(createLoanSchema),
   LoansController.createLoan
 );
