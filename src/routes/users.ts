@@ -1,8 +1,9 @@
 import { Router } from "express";
+import { LoansController } from "../controllers/loans.controller";
 import { UsersController } from "../controllers/users.controller";
 import { validateSchema } from "../middleware/validationMiddleware";
+import { loanSchema } from "../schemas/loans.schema";
 import { createUserSchema, loginUserSchema } from "../schemas/users.schema";
-import { loansRouter } from "./loans";
 import { offersRouter } from "./offers";
 
 export const usersRouter = Router();
@@ -20,4 +21,8 @@ usersRouter.post(
 );
 
 usersRouter.use("/", offersRouter);
-usersRouter.use("/", loansRouter);
+usersRouter.post(
+  "/:userId/prestamos",
+  validateSchema(loanSchema),
+  LoansController.createLoan
+);

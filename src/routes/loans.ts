@@ -1,12 +1,6 @@
 import { Router } from "express";
-import { LoansController } from "../controllers/loans.controller";
-import { validateSchema } from "../middleware/validationMiddleware";
-import { loanSchema } from "../schemas/loans.schema";
+import { PaymentsController } from "../controllers/payments.controller";
 
 export const loansRouter = Router();
 
-loansRouter.post(
-  "/:userId/prestamos",
-  validateSchema(loanSchema),
-  LoansController.createLoan
-);
+loansRouter.post("/:loanId/pagos", PaymentsController.registerPayment);

@@ -1,3 +1,4 @@
+import { Installment } from "@prisma/client";
 import { prisma } from "../clients/prisma";
 import { addWeeks } from "../utils/addWeeks";
 
@@ -29,6 +30,48 @@ export class InstallmentsModel {
 
     return prisma.installment.createManyAndReturn({
       data: installments,
+    });
+  }
+
+  static async findClosestUnpaidInstallment(loanId: string) {
+    return prisma.installment.findFirst({
+      where: {
+        loanId,
+        NOT: {
+          status: {
+            status: "Completed",
+          },
+        },
+        dueDate: {
+          gte: new Date(Date.now()),
+        },
+      },
+      orderBy: { dueDate: "asc" },
+      include: {
+        status: { select: { status: true } },
+      },
+    });
+  }
+
+  static async registerPayment(
+    installment: Partial<Installment>,
+    newPaidAmount: number
+  ) {
+    const nextStatus =
+      installment.dueAmount === newPaidAmount ? "Completed" : "Partial";
+
+    return prisma.installment.update({
+      where: {
+        id: installment.id,
+      },
+      data: {
+        paidAmount: newPaidAmount,
+        status: {
+          connect: {
+            status: nextStatus,
+          },
+        },
+      },
     });
   }
 }
