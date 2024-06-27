@@ -1,5 +1,6 @@
 import { Offer } from "@prisma/client";
 import { prisma } from "../clients/prisma";
+import { OfferStatus } from "../types/enums";
 
 export class OffersModel {
   static async create(data: Partial<Offer>) {
@@ -26,7 +27,7 @@ export class OffersModel {
       where: { id: offer.id },
       data: {
         status: {
-          connect: { status: "Accepted" },
+          connect: { status: OfferStatus.ACCEPTED },
         },
       },
     });

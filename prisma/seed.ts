@@ -2,7 +2,12 @@
 // https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding#seeding-your-database-with-typescript-or-javascript
 
 import { PrismaClient } from "@prisma/client";
-import { UserRoles } from "../src/types/enums";
+import {
+  InstallmentStatus,
+  LoanStatus,
+  OfferStatus,
+  UserRoles,
+} from "../src/types/enums";
 const prisma = new PrismaClient();
 
 async function main() {
@@ -13,9 +18,9 @@ async function main() {
 
   const offerStatus = await prisma.offerStatus.createManyAndReturn({
     data: [
-      { status: "Pending" },
-      { status: "Accepted" },
-      { status: "Rejected" },
+      { status: OfferStatus.PENDING },
+      { status: OfferStatus.ACCEPTED },
+      { status: OfferStatus.REJECTED },
     ],
   });
 
@@ -23,10 +28,10 @@ async function main() {
 
   const loanStatus = await prisma.loanStatus.createManyAndReturn({
     data: [
-      { status: "Active" },
-      { status: "Paid" },
-      { status: "Defaulted" },
-      { status: "Pending" },
+      { status: LoanStatus.ACTIVE },
+      { status: LoanStatus.PAID },
+      { status: LoanStatus.DEFAULTED },
+      { status: LoanStatus.PENDING },
     ],
   });
 
@@ -34,9 +39,9 @@ async function main() {
 
   const installmentStatus = await prisma.installmentStatus.createManyAndReturn({
     data: [
-      { status: "Pending" },
-      { status: "Completed" },
-      { status: "Partial" },
+      { status: InstallmentStatus.PENDING },
+      { status: InstallmentStatus.COMPLETED },
+      { status: InstallmentStatus.PARTIAL },
     ],
   });
 

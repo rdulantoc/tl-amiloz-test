@@ -23,16 +23,17 @@ usersRouter.post(
   UsersController.login
 );
 
-usersRouter.use(
-  "/",
-  authenticateToken,
-  validateRole(UserRoles.ADMIN),
-  offersRouter
-);
 usersRouter.post(
   "/:userId/prestamos",
   authenticateToken,
   validateRole(UserRoles.USER),
   validateSchema(createLoanSchema),
   LoansController.createLoan
+);
+
+usersRouter.use(
+  "/",
+  authenticateToken,
+  validateRole(UserRoles.ADMIN),
+  offersRouter
 );

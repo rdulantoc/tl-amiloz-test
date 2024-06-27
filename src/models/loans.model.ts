@@ -1,11 +1,12 @@
 import { Offer } from "@prisma/client";
 import { prisma } from "../clients/prisma";
+import { InstallmentStatus, LoanStatus } from "../types/enums";
 import { calculateInstallmentAmount } from "../utils/calculateInstallmentAmount";
 import { InstallmentsModel } from "./installments.model";
 import { LoanStatusModel } from "./loanStatus.model";
 import { OffersModel } from "./offers.model";
 
-const DEFAULT_LOAN_STATUS = "Pending";
+const DEFAULT_LOAN_STATUS = LoanStatus.PENDING;
 
 export class LoansModel {
   static async create(offer: Offer) {
@@ -67,10 +68,10 @@ export class LoansModel {
     });
 
     const isPaid = loan?.installment.every(
-      (item) => item.status.status === "Completed"
+      (item) => item.status.status === InstallmentStatus.COMPLETED
     );
 
-    const status = isPaid ? "Paid" : "Active";
+    const status = isPaid ? LoanStatus.PAID : LoanStatus.ACTIVE;
 
     return prisma.loan.update({
       where: {

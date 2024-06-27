@@ -1,8 +1,9 @@
 import { Installment } from "@prisma/client";
 import { prisma } from "../clients/prisma";
+import { InstallmentStatus } from "../types/enums";
 import { addWeeks } from "../utils/addWeeks";
 
-const DEFAULT_INSTALLMENT_STATUS = "Pending";
+const DEFAULT_INSTALLMENT_STATUS = InstallmentStatus.PENDING;
 
 export class InstallmentsModel {
   static async createMany(
@@ -39,7 +40,7 @@ export class InstallmentsModel {
         loanId,
         NOT: {
           status: {
-            status: "Completed",
+            status: InstallmentStatus.COMPLETED,
           },
         },
         dueDate: {
@@ -63,7 +64,9 @@ export class InstallmentsModel {
     newPaidAmount: number
   ) {
     const nextStatus =
-      installment.dueAmount === newPaidAmount ? "Completed" : "Partial";
+      installment.dueAmount === newPaidAmount
+        ? InstallmentStatus.COMPLETED
+        : InstallmentStatus.PARTIAL;
 
     return prisma.installment.update({
       where: {
@@ -82,7 +85,10 @@ export class InstallmentsModel {
 
   static async revertPayment(installment: Installment, revertedAmount: number) {
     const newPaidAmount = installment.paidAmount - revertedAmount;
-    const nextStatus = newPaidAmount === 0 ? "Pending" : "Partial";
+    const nextStatus =
+      newPaidAmount === 0
+        ? InstallmentStatus.PENDING
+        : InstallmentStatus.PARTIAL;
 
     return prisma.installment.update({
       where: { id: installment.id },
