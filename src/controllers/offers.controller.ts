@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { OfferModel } from "../models/offers.model";
+import { OffersModel } from "../models/offers.model";
 import { UsersModel } from "../models/users.model";
 
-export class OfferController {
+export class OffersController {
   static async createOffer(req: Request, res: Response) {
     const { userId } = req.params;
     const { offers } = req.body;
@@ -16,7 +16,7 @@ export class OfferController {
           .json({ error: "Could not create offer. User not found" });
       }
 
-      const offer = await OfferModel.createMany(userId, offers);
+      const offer = await OffersModel.createMany(userId, offers);
 
       return res.status(201).send(offer);
     } catch (err) {

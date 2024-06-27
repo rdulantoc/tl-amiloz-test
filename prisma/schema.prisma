@@ -19,13 +19,14 @@ model User {
   createdAt DateTime @default(now())
   role      Role     @relation(fields: [roleId], references: [id])
   roleId    String
-  Offer     Offer[]
+  offer     Offer[]
+  loan      Loan[]
 }
 
 model Role {
   id   String @id @default(uuid())
   name String @unique
-  User User[]
+  user User[]
 }
 
 model Offer {
@@ -37,6 +38,8 @@ model Offer {
   interestRate  Float
   status        OfferStatus @relation(fields: [offerStatusId], references: [id])
   offerStatusId Int
+  loan          Loan?
+  startDate     DateTime
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
 }
@@ -45,4 +48,57 @@ model OfferStatus {
   id     Int     @id @default(autoincrement())
   status String
   Offer  Offer[]
+}
+
+model Loan {
+  id           String        @id @default(uuid())
+  user         User          @relation(fields: [userId], references: [id])
+  userId       String
+  offer        Offer         @relation(fields: [offerId], references: [id])
+  offerId      String        @unique
+  loanedAmount Float
+  dueAmount    Float
+  term         Int
+  interestRate Float
+  installment  Installment[]
+  status       LoanStatus    @relation(fields: [loanStatusId], references: [id])
+  loanStatusId Int
+  startDate    DateTime
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+}
+
+model LoanStatus {
+  id     Int    @id @default(autoincrement())
+  status String
+  loan   Loan[]
+}
+
+model Installment {
+  id                  String            @id @default(uuid())
+  loan                Loan              @relation(fields: [loanId], references: [id])
+  loanId              String
+  status              InstallmentStatus @relation(fields: [installmentStatusId], references: [id])
+  installmentStatusId Int
+  dueAmount           Float
+  dueDate             DateTime
+  paidAmount          Float             @default(0)
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  payment             Payment[]
+}
+
+model InstallmentStatus {
+  id          Int           @id @default(autoincrement())
+  status      String
+  Installment Installment[]
+}
+
+model Payment {
+  id            String      @id @default(uuid())
+  installment   Installment @relation(fields: [installmentId], references: [id])
+  installmentId String
+  amount        Float
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
 }

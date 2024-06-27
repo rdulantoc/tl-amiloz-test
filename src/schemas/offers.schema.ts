@@ -4,6 +4,7 @@ const offerSchema = z.object({
   term: z.number().positive().int(),
   interestRate: z.number().positive().max(1),
   offerStatusId: z.number().int(),
+  startDate: z.coerce.date(),
 });
 
 export const createOfferSchema = z.object({

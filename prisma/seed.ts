@@ -19,6 +19,27 @@ async function main() {
   });
 
   console.log("Offer statuses created", offerStatus);
+
+  const loanStatus = await prisma.loanStatus.createManyAndReturn({
+    data: [
+      { status: "Active" },
+      { status: "Paid" },
+      { status: "Defaulted" },
+      { status: "Pending" },
+    ],
+  });
+
+  console.log("Loan statuses created", loanStatus);
+
+  const installmentStatus = await prisma.installmentStatus.createManyAndReturn({
+    data: [
+      { status: "Pending" },
+      { status: "Completed" },
+      { status: "Partial" },
+    ],
+  });
+
+  console.log("Installment statuses created", installmentStatus);
 }
 
 main()
