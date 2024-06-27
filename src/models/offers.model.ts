@@ -20,4 +20,15 @@ export class OffersModel {
   static async findById(offerId: string) {
     return prisma.offer.findUnique({ where: { id: offerId } });
   }
+
+  static async acceptOffer(offer: Offer) {
+    return prisma.offer.update({
+      where: { id: offer.id },
+      data: {
+        status: {
+          connect: { status: "Accepted" },
+        },
+      },
+    });
+  }
 }

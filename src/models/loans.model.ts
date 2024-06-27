@@ -2,6 +2,8 @@ import { Offer } from "@prisma/client";
 import { prisma } from "../clients/prisma";
 import { calculateInstallmentAmount } from "../utils/calculateInstallmentAmount";
 import { InstallmentsModel } from "./installments.model";
+import { LoanStatusModel } from "./loanStatus.model";
+import { OffersModel } from "./offers.model";
 
 const DEFAULT_LOAN_STATUS = "Pending";
 
@@ -22,11 +24,7 @@ export class LoansModel {
     );
     const dueAmount = term * installmentAmount;
 
-    const defaultLoanStatus = await prisma.loanStatus.findFirst({
-      select: { id: true },
-      where: { status: DEFAULT_LOAN_STATUS },
-    });
-    const loanStatusId = defaultLoanStatus!.id;
+    const loanStatusId = await LoanStatusModel.getId(DEFAULT_LOAN_STATUS);
 
     const loan = {
       userId,
@@ -50,6 +48,8 @@ export class LoansModel {
       installmentAmount,
       startDate
     );
+
+    await OffersModel.acceptOffer(offer);
 
     return { ...createdLoan, installments: createdInstallments };
   }
