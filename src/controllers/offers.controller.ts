@@ -5,7 +5,7 @@ import { UsersModel } from "../models/users.model";
 export class OfferController {
   static async createOffer(req: Request, res: Response) {
     const { userId } = req.params;
-    const { amount, term, interestRate, offerStatusId } = req.body;
+    const { offers } = req.body;
 
     try {
       const user = await UsersModel.findById({ id: userId });
@@ -16,18 +16,12 @@ export class OfferController {
           .json({ error: "Could not create offer. User not found" });
       }
 
-      const offer = await OfferModel.create({
-        userId,
-        amount,
-        term,
-        interestRate,
-        offerStatusId,
-      });
+      const offer = await OfferModel.createMany(userId, offers);
 
       return res.status(201).send(offer);
     } catch (err) {
       console.error(err);
-      res.status(500).json({ error: "Could not create offer" });
+      res.status(500).json({ error: "Could not create offers" });
     }
   }
 }
