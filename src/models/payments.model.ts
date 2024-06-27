@@ -10,7 +10,11 @@ export class PaymentsModel {
     return prisma.payment.findUnique({
       where: { id: paymentId },
       include: {
-        installment: true,
+        installment: {
+          include: {
+            loan: true,
+          },
+        },
       },
     });
   }

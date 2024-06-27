@@ -7,10 +7,16 @@ export class UsersModel {
   }
 
   static async findByEmail({ email }: { email: string }) {
-    return prisma.user.findUnique({ where: { email } });
+    return prisma.user.findUnique({
+      where: { email },
+      include: { role: { select: { name: true } } },
+    });
   }
 
   static async findById({ id }: { id: string }) {
-    return prisma.user.findUnique({ where: { id } });
+    return prisma.user.findUnique({
+      where: { id },
+      include: { role: { select: { name: true } } },
+    });
   }
 }

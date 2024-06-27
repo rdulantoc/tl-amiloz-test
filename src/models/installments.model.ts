@@ -49,6 +49,11 @@ export class InstallmentsModel {
       orderBy: { dueDate: "asc" },
       include: {
         status: { select: { status: true } },
+        loan: {
+          select: {
+            userId: true,
+          },
+        },
       },
     });
   }

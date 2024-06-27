@@ -2,11 +2,12 @@
 // https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding#seeding-your-database-with-typescript-or-javascript
 
 import { PrismaClient } from "@prisma/client";
+import { UserRoles } from "../src/types/roles";
 const prisma = new PrismaClient();
 
 async function main() {
   const roles = await prisma.role.createManyAndReturn({
-    data: [{ name: "user" }, { name: "admin" }],
+    data: [{ name: UserRoles.USER }, { name: UserRoles.ADMIN }],
   });
   console.log("Roles created", roles);
 

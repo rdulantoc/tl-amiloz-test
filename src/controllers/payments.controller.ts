@@ -7,9 +7,17 @@ export class PaymentsController {
     try {
       const { loanId } = req.params;
       const { amount, installmentId } = req.body;
+      const { id: sessionUserId } = req.user ?? {};
 
       const installment =
         await InstallmentsModel.findClosestUnpaidInstallment(loanId);
+
+      const userId = installment?.loan.userId;
+      if (userId !== sessionUserId) {
+        return res
+          .status(403)
+          .json({ error: "Could not register payment. Unauthorized user" });
+      }
 
       if (!installment)
         return res
@@ -53,6 +61,13 @@ export class PaymentsController {
       const { paymentId } = req.params;
 
       const payment = await PaymentsModel.findById(paymentId);
+      const { id: sessionUserId } = req.user ?? {};
+      const userId = payment?.installment?.loan.userId;
+      if (userId !== sessionUserId) {
+        return res
+          .status(403)
+          .json({ error: "Could not revert payment. Unauthorized user" });
+      }
 
       if (!payment)
         return res
@@ -63,11 +78,9 @@ export class PaymentsController {
       const { loanId } = installment;
 
       if (isReverted)
-        return res
-          .status(405)
-          .json({
-            error: "Could not revert payment. Payment is already reverted",
-          });
+        return res.status(405).json({
+          error: "Could not revert payment. Payment is already reverted",
+        });
 
       const revertedPayment = await PaymentsModel.revert(paymentId);
       const updatedInstallment = await InstallmentsModel.revertPayment(

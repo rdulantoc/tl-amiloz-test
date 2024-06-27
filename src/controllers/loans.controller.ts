@@ -7,6 +7,14 @@ export class LoansController {
   static async createLoan(req: Request, res: Response) {
     const { userId } = req.params;
     const { offerId } = req.body;
+    const { id: sessionUserId } = req.user ?? {};
+
+    if (userId !== sessionUserId) {
+      return res
+        .status(403)
+        .json({ error: "Could not create loan. Unauthorized user" });
+    }
+
     try {
       const user = await UsersModel.findById({ id: userId });
       if (!user) {
