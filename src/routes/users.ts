@@ -2,6 +2,7 @@ import { Router } from "express";
 import { UsersController } from "../controllers/users.controller";
 import { validateSchema } from "../middleware/validationMiddleware";
 import { createUserSchema, loginUserSchema } from "../schemas/users.schema";
+import { offersRouter } from "./offers";
 
 export const usersRouter = Router();
 
@@ -16,3 +17,5 @@ usersRouter.post(
   validateSchema(loginUserSchema),
   UsersController.login
 );
+
+usersRouter.use("/", offersRouter);

@@ -19,10 +19,30 @@ model User {
   createdAt DateTime @default(now())
   role      Role     @relation(fields: [roleId], references: [id])
   roleId    String
+  Offer     Offer[]
 }
 
 model Role {
   id   String @id @default(uuid())
   name String @unique
   User User[]
+}
+
+model Offer {
+  id            String      @id @default(uuid())
+  user          User        @relation(fields: [userId], references: [id])
+  userId        String
+  amount        Float
+  term          Int
+  interestRate  Float
+  status        OfferStatus @relation(fields: [offerStatusId], references: [id])
+  offerStatusId Int
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model OfferStatus {
+  id     Int     @id @default(autoincrement())
+  status String
+  Offer  Offer[]
 }

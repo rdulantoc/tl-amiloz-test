@@ -9,4 +9,8 @@ export class UsersModel {
   static async findByEmail({ email }: { email: string }) {
     return prisma.user.findUnique({ where: { email } });
   }
+
+  static async findById({ id }: { id: string }) {
+    return prisma.user.findUnique({ where: { id } });
+  }
 }

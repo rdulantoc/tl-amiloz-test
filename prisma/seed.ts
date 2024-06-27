@@ -9,6 +9,16 @@ async function main() {
     data: [{ name: "user" }, { name: "admin" }],
   });
   console.log("Roles created", roles);
+
+  const offerStatus = await prisma.offerStatus.createManyAndReturn({
+    data: [
+      { status: "Pending" },
+      { status: "Accepted" },
+      { status: "Rejected" },
+    ],
+  });
+
+  console.log("Offer statuses created", offerStatus);
 }
 
 main()
