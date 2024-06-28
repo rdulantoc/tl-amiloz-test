@@ -16,6 +16,21 @@ async function main() {
   });
   console.log("Roles created", roles);
 
+  const admin = await prisma.user.create({
+    data: {
+      name: "Admin",
+      lastName: "Beloz",
+      email: "admin@gmail.com",
+      password: "1234",
+      role: {
+        connect: {
+          name: UserRoles.ADMIN,
+        },
+      },
+    },
+  });
+  console.log("Admin user created", admin);
+
   const offerStatus = await prisma.offerStatus.createManyAndReturn({
     data: [
       { status: OfferStatus.PENDING },
