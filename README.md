@@ -33,7 +33,6 @@ To install and run this project locally, you'll need the following dependencies:
 
   nvm use       # Use Node version specified in .nvmrc
   npm install   # Install project dependencies
-  npx prisma generate # Generate and seed database
   npm run dev   # Run project locally
   ```
 
