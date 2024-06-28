@@ -16,9 +16,9 @@ export class OffersController {
           .json({ error: "Could not create offer. User not found" });
       }
 
-      const offer = await OffersModel.createMany(userId, offers);
+      const createdOffers = await OffersModel.createMany(userId, offers);
 
-      return res.status(201).send(offer);
+      return res.status(201).send({ offers: createdOffers });
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: "Could not create offers" });

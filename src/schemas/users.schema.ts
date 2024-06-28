@@ -1,5 +1,67 @@
 import { z } from "zod";
 
+/**
+ * @openapi
+ * components:
+ *  schemas:
+ *    CreateUserInput:
+ *      type: object
+ *      required:
+ *        - name
+ *        - lastName
+ *        - email
+ *        - password
+ *        - roleId
+ *      properties:
+ *        name:
+ *          type: string
+ *          default: Juan
+ *        lastName:
+ *          type: string
+ *          default: Perez
+ *        email:
+ *          type: string
+ *          default: juan@gmail.com
+ *        password:
+ *          type: string
+ *          default: 1234
+ *        roleId:
+ *          type: string
+ *          default: 76210e9a-6b9f-44c0-ae16-20e78b180677
+ *    CreateUserResponse:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: string
+ *        name:
+ *          type: string
+ *        lastName:
+ *          type: string
+ *        email:
+ *          type: string
+ *        password:
+ *          type: string
+ *        roleId:
+ *          type: string
+ *    LoginInput:
+ *      type: object
+ *      required:
+ *        - email
+ *        - password
+ *      properties:
+ *        email:
+ *          type: string
+ *          default: juan@gmail.com
+ *        password:
+ *          type: string
+ *          default: 1234
+ *    LoginResponse:
+ *      type: object
+ *      properties:
+ *        token:
+ *          type: string
+ */
+
 export const createUserSchema = z.object({
   body: z.object({
     name: z

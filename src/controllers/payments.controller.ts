@@ -82,7 +82,8 @@ export class PaymentsController {
           error: "Could not revert payment. Payment is already reverted",
         });
 
-      const revertedPayment = await PaymentsModel.revert(paymentId);
+      const { installment: _, ...revertedPayment } =
+        await PaymentsModel.revert(paymentId);
       const updatedInstallment = await InstallmentsModel.revertPayment(
         installment,
         amount
@@ -92,7 +93,7 @@ export class PaymentsController {
 
       res
         .status(201)
-        .send({ revertedPayment, installment: updatedInstallment });
+        .send({ payment: revertedPayment, installment: updatedInstallment });
     } catch (err) {
       console.error(err);
       res.status(500).json({ error: "Could not revert payment" });
