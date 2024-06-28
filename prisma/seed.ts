@@ -2,6 +2,7 @@
 // https://www.prisma.io/docs/orm/prisma-migrate/workflows/seeding#seeding-your-database-with-typescript-or-javascript
 
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcrypt";
 import {
   InstallmentStatus,
   LoanStatus,
@@ -16,12 +17,13 @@ async function main() {
   });
   console.log("Roles created", roles);
 
+  const hashedPassword = bcrypt.hashSync("1234", "salt");
   const admin = await prisma.user.create({
     data: {
       name: "Admin",
       lastName: "Beloz",
       email: "admin@gmail.com",
-      password: "1234",
+      password: hashedPassword,
       role: {
         connect: {
           name: UserRoles.ADMIN,
