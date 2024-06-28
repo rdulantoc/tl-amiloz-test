@@ -4,7 +4,7 @@
 
 This project is the MVP of a backend API server to simulate a loan management system.
 
-#### 🎯 Initial considerations
+### 🎯 Initial considerations
 
 To simplify some of the logic involved and to keep the scope of this MVP _10-hour-technical-assessment-ish_, I made some assumptions and decisions listed next. ~~Also because I'm not a financial expert in loans logic other than from the user perspective.~~
 
@@ -15,14 +15,14 @@ To simplify some of the logic involved and to keep the scope of this MVP _10-hou
 
 ## ⚙️ Project Installation
 
-#### :clipboard: Prerequisites
+### :clipboard: Prerequisites
 
 To install and run this project locally, you'll need the following dependencies:
 
 - Node v20.12.2 (as specified in the .nvmrc file)
 - `npm` as a package manager
 
-#### :hammer_and_wrench: Steps to install
+### :hammer_and_wrench: Steps to install
 
 - First, create a `.env` file in the root folder (feel free to copy the `.env.template` file) and then set the corresponding values.
 
@@ -54,17 +54,26 @@ To install and run this project locally, you'll need the following dependencies:
 
 ## 📄 Documentation
 
-#### 📘 Entity Relationship Diagram
+### 📘 Entity Relationship Diagram
 
 ![Entity Relationship Diagram](src/docs/ERD.png)
 
-#### 🔗 Created Endpoints
+### 🔗 Created Endpoints
 
 This project is configured to use Swagger to document the endpoints based on the OpenAPI 3.0 specification. To access the docs page and start exploring, please go to `http://localhost:3000/docs` after booting up the server.
 
+**Admin user credentials:**
+
+```js
+  {
+    "email": "admin@gmail.com",
+    "password": "1234"
+  }
+```
+
 As per the required and optional functional requirements, this is a list of the endpoints created as part of this MVP:
 
-##### 1. Create a user - `POST /usuarios`:
+#### 1. Create a user - `POST /usuarios`:
 
 Allows the creation of a user.
 
@@ -90,7 +99,7 @@ Allows the creation of a user.
   }
   ```
 
-##### 2. Login - `POST /usuarios/login`:
+#### 2. Login - `POST /usuarios/login`:
 
 Allows a user to login using their access credentials.
 
@@ -109,7 +118,7 @@ Allows a user to login using their access credentials.
   }
   ```
 
-##### 3. Create offers for a user - `POST /usuarios/{userId}/ofertas`:
+#### 3. Create offers for a user - `POST /usuarios/{userId}/ofertas`:
 
 Allows an admin to create different offers for a user. The offers vary in settings such as amount to loan, term of loan and/or interest rate. A minimum of two offers have to be created at a time.
 
@@ -154,7 +163,7 @@ Allows an admin to create different offers for a user. The offers vary in settin
   }
   ```
 
-##### 4. Create a loan from an offer - `POST /usuarios/{userId}/prestamos`:
+#### 4. Create a loan from an offer - `POST /usuarios/{userId}/prestamos`:
 
 Allows a user to create a loan based on an existing offer. It creates the loan and all the installments associated with it.
 
@@ -194,7 +203,7 @@ Allows a user to create a loan based on an existing offer. It creates the loan a
   }
   ```
 
-##### 5. Register a payment for a loan - `POST /prestamos/{loanId}/pagos`:
+#### 5. Register a payment for a loan - `POST /prestamos/{loanId}/pagos`:
 
 Allows a user to register a payment for an installment associated to a loan. The payment will be registered to the installment whose due date is closest. When one or more payments cover all the installment's due amount, its status will be updated to _Complete_, otherwise it will be set to _Partial_. Similarly, if all the installments associated to a loan are completely paid, its status will be updated to _Paid_.
 
@@ -230,7 +239,7 @@ Allows a user to register a payment for an installment associated to a loan. The
   }
   ```
 
-##### 6. Revert a payment - `POST /pagos/{paymentId}/revertir`:
+#### 6. Revert a payment - `POST /pagos/{paymentId}/revertir`:
 
 Allows a user to revert an existing payment. The logic to revert the payment includes reducing the paid amount attribute from the associated installment, and updating the installment and loan statuses accordingly.
 
