@@ -39,8 +39,6 @@ import { z } from "zod";
  *          type: string
  *        email:
  *          type: string
- *        password:
- *          type: string
  *        roleId:
  *          type: string
  *    LoginInput:
